@@ -1,0 +1,34 @@
+{
+  "name": "nano-banana-mcp",
+  "version": "0.1.0",
+  "description": "Remote MCP server on Cloudflare Workers for photorealistic remodeling renders with Google Imagen 4 and Gemini (Nano Banana), with an interactive widget for claude.ai and optional JobTread filing.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "typecheck": "tsc --noEmit",
+    "setup:check": "node scripts/check-setup.mjs",
+    "smoke": "node scripts/smoke-test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.2",
+    "@modelcontextprotocol/sdk": "1.23.0",
+    "agents": "^0.2.16",
+    "ai": "^5.0.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250419.0",
+    "@types/node": "^25.9.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.14.4"
+  },
+  "packageManager": "pnpm@10.21.0",
+  "pnpm": {
+    "overrides": {
+      "@modelcontextprotocol/sdk": "1.23.0"
+    }
+  }
+}

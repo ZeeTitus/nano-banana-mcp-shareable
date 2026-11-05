@@ -1,0 +1,54 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "nano-banana-mcp",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-04-20",
+	"compatibility_flags": ["nodejs_compat"],
+	// Optional. Set this if your Cloudflare login has more than one account
+	// (find it with `npx wrangler whoami`). Otherwise leave it out.
+	// "account_id": "<your-cloudflare-account-id>",
+	"observability": {
+		"enabled": true
+	},
+	"workers_dev": true,
+	// Plain (non-secret) settings. Secrets go in with `wrangler secret put`; see SETUP.md.
+	// After changing anything here, run `pnpm cf-typegen` so the Env types match.
+	"vars": {
+		// REQUIRED. The public https origin this Worker is reachable at, no trailing slash.
+		// Use your custom domain (SETUP.md step 5 explains why workers.dev is not enough).
+		// Stored image URLs, the widget's upload calls, and the widget CSP all use it.
+		"PUBLIC_ORIGIN": "https://render.example.com",
+
+		// IANA time zone for the date in JobTread file names.
+		"TIME_ZONE": "America/Chicago",
+
+		// JobTread filing rules. Only used when the JOBTREAD_GRANT_KEY secret is set.
+		// The tags must already exist in your JobTread org (looked up by name).
+		"JOBTREAD_RENDERS_FOLDER": "03 - Renders",
+		"JOBTREAD_SELECTIONS_FOLDER": "04 - Selections",
+		"JOBTREAD_RENDER_TAG": "3D Render",
+		"JOBTREAD_LATEST_TAG": "Latest",
+		"JOBTREAD_OUTDATED_TAG": "Outdated"
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "MCP_OBJECT",
+				"class_name": "NanoBananaMCP"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["NanoBananaMCP"]
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "UPLOADS",
+			// Create it first: npx wrangler r2 bucket create nano-banana-refs
+			"bucket_name": "nano-banana-refs"
+		}
+	]
+}
